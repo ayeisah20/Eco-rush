@@ -1,0 +1,840 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>EcoRush Dashboard — Live Tracker & Eco Impact</title>
+
+<!-- Leaflet CSS & JS -->
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+<!-- Fonts -->
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+<style>
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+  font-family:'Inter',sans-serif;
+}
+
+body{
+  background:#f4f7f4;
+  overflow:hidden;
+}
+
+/* SIDEBAR */
+.sidebar{
+  position:fixed;
+  left:0;
+  top:0;
+  width:270px;
+  height:100vh;
+  background:linear-gradient(180deg,#022b12,#001a0c);
+  color:white;
+  padding:25px 18px;
+  display:flex;
+  flex-direction:column;
+  justify-content:space-between;
+  z-index:100;
+  overflow-y:auto;
+}
+
+.logo{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  margin-bottom:40px;
+}
+
+.logo h2{
+  font-size:32px;
+  font-weight:800;
+}
+
+.logo p{
+  font-size:12px;
+  color:#b7d7c0;
+}
+
+.menu{
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+}
+
+.menu-item{
+  display:flex;
+  align-items:center;
+  gap:15px;
+  padding:15px 18px;
+  border-radius:16px;
+  cursor:pointer;
+  transition:0.3s;
+  color:#d7e6dc;
+}
+
+.menu-item:hover{
+  background:rgba(255,255,255,0.08);
+}
+
+.menu-item.active{
+  background:linear-gradient(90deg,#1db954,#14853c);
+  color:white;
+}
+
+.bottom-card{
+  background:rgba(255,255,255,0.05);
+  border-radius:20px;
+  padding:20px;
+  margin-top:20px;
+}
+
+.bottom-card button{
+  margin-top:15px;
+  width:100%;
+  padding:12px;
+  border:none;
+  border-radius:12px;
+  background:#1db954;
+  color:white;
+  cursor:pointer;
+  font-weight:600;
+  transition:0.2s;
+}
+
+.bottom-card button:hover{
+  background:#15853a;
+}
+
+/* LOGOUT BUTTON */
+.logout-btn{
+  background:#c0392b !important;
+  margin-top:10px !important;
+}
+.logout-btn:hover{
+  background:#a93226 !important;
+}
+
+/* MAIN */
+.main{
+  margin-left:270px;
+  height:100vh;
+  overflow-y:auto;
+  padding:30px;
+}
+
+.topbar{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:30px;
+  flex-wrap:wrap;
+  gap:15px;
+}
+
+.topbar h1{
+  font-size:40px;
+  font-weight:800;
+}
+
+.topbar p{
+  color:#666;
+  margin-top:8px;
+}
+
+.profile{
+  display:flex;
+  align-items:center;
+  gap:15px;
+}
+
+.profile img{
+  width:50px;
+  height:50px;
+  border-radius:50%;
+  object-fit:cover;
+}
+
+.notification{
+  width:50px;
+  height:50px;
+  border-radius:50%;
+  background:white;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:22px;
+  cursor:pointer;
+  position:relative;
+  box-shadow:0 2px 8px rgba(0,0,0,0.1);
+}
+
+.badge{
+  position:absolute;
+  top:0;
+  right:0;
+  width:20px;
+  height:20px;
+  border-radius:50%;
+  background:#e74c3c;
+  color:white;
+  font-size:11px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+
+/* CARDS */
+.cards{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+  gap:20px;
+  margin-bottom:25px;
+}
+
+.card{
+  background:white;
+  border-radius:25px;
+  padding:25px;
+  box-shadow:0 4px 20px rgba(0,0,0,0.05);
+  transition:0.2s;
+  cursor:pointer;
+}
+.card:hover{
+  transform:translateY(-3px);
+  box-shadow:0 8px 25px rgba(0,0,0,0.1);
+}
+
+.card-top{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+}
+
+.card-icon{
+  width:60px;
+  height:60px;
+  border-radius:18px;
+  background:#e7f7ea;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:28px;
+}
+
+.card h2{
+  font-size:42px;
+  margin-top:15px;
+}
+
+.green{
+  color:#1db954;
+}
+
+/* GRID */
+.grid{
+  display:grid;
+  grid-template-columns:2fr 1fr;
+  gap:20px;
+  margin-bottom:20px;
+}
+
+.panel{
+  background:white;
+  border-radius:25px;
+  padding:25px;
+  box-shadow:0 4px 20px rgba(0,0,0,0.05);
+}
+
+.panel-header{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:20px;
+  flex-wrap:wrap;
+}
+
+.live{
+  background:#1db954;
+  color:white;
+  padding:5px 12px;
+  border-radius:999px;
+  font-size:12px;
+  animation:pulse 1.5s infinite;
+}
+@keyframes pulse{
+  0%{opacity:1;}
+  50%{opacity:0.7;}
+  100%{opacity:1;}
+}
+
+.map-container{
+  width:100%;
+  height:320px;
+  border-radius:20px;
+  overflow:hidden;
+  background:#e9ecef;
+  position:relative;
+}
+
+.timeline{
+  display:flex;
+  justify-content:space-between;
+  margin-top:30px;
+  flex-wrap:wrap;
+  gap:10px;
+}
+
+.step{
+  flex:1;
+  text-align:center;
+  min-width:100px;
+}
+
+.circle{
+  width:45px;
+  height:45px;
+  border-radius:50%;
+  background:#1db954;
+  color:white;
+  margin:auto;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  margin-bottom:10px;
+  transition:0.3s;
+}
+
+.gray{
+  background:#ddd;
+  color:#888;
+}
+
+.status-box{
+  border:1px solid #eee;
+  border-radius:20px;
+  padding:20px;
+}
+
+.status-row{
+  display:flex;
+  justify-content:space-between;
+  margin:18px 0;
+  padding-bottom:8px;
+  border-bottom:1px solid #f0f0f0;
+}
+
+.btn{
+  width:100%;
+  padding:15px;
+  border:none;
+  border-radius:15px;
+  background:#1db954;
+  color:white;
+  font-size:16px;
+  cursor:pointer;
+  margin-top:20px;
+  transition:0.3s;
+  font-weight:600;
+}
+
+.btn-secondary{
+  background:#2c6e3c;
+}
+
+.btn-danger{
+  background:#c0392b;
+}
+.btn-danger:hover{
+  background:#a93226;
+}
+
+.btn:hover{
+  opacity:0.85;
+  transform:scale(0.98);
+}
+
+.bottom-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:20px;
+}
+
+.list-item{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding:18px;
+  border:1px solid #eee;
+  border-radius:18px;
+  margin-top:15px;
+  cursor:pointer;
+  transition:0.2s;
+}
+.list-item:hover{ background:#f9fff7;}
+
+.section{
+  display:none;
+}
+
+.section.active{
+  display:block;
+}
+
+/* MODAL */
+.modal{
+  position:fixed;
+  top:0;
+  left:0;
+  width:100%;
+  height:100%;
+  background:rgba(0,0,0,0.6);
+  display:none;
+  align-items:center;
+  justify-content:center;
+  z-index:1000;
+}
+
+.modal-content{
+  width:450px;
+  background:white;
+  padding:30px;
+  border-radius:25px;
+  max-width:90%;
+  position:relative;
+  animation:modalSlide 0.3s ease;
+}
+@keyframes modalSlide{
+  from{transform:translateY(-50px);opacity:0;}
+  to{transform:translateY(0);opacity:1;}
+}
+
+.modal-content h2{
+  margin-bottom:20px;
+}
+
+.modal-content input, .modal-content select, .modal-content textarea{
+  width:100%;
+  padding:15px;
+  margin-bottom:15px;
+  border-radius:12px;
+  border:1px solid #ddd;
+}
+
+.close{
+  position:absolute;
+  right:20px;
+  top:15px;
+  cursor:pointer;
+  font-size:28px;
+  font-weight:bold;
+  transition:0.2s;
+}
+.close:hover{color:#c0392b;}
+
+/* mobile */
+@media(max-width:1100px){
+  .grid{ grid-template-columns:1fr; }
+  .bottom-grid{ grid-template-columns:1fr; }
+}
+@media(max-width:900px){
+  .sidebar{ width:90px; padding:20px 10px; }
+  .logo h2, .logo p, .menu-item span, .bottom-card{ display:none; }
+  .main{ margin-left:90px; }
+  .topbar h1{ font-size:28px; }
+}
+</style>
+</head>
+<body>
+
+<div class="sidebar">
+  <div>
+    <div class="logo">
+      <div style="font-size:40px;">🌿</div>
+      <div><h2>EcoRush</h2><p>AI-Powered Delivery</p></div>
+    </div>
+    <div class="menu">
+      <div class="menu-item active" onclick="showSection('dashboard',this)">🏠 <span>Dashboard</span></div>
+      <div class="menu-item" onclick="showSection('orders',this)">📦 <span>My Orders</span></div>
+      <div class="menu-item" onclick="showSection('tracker',this)">📍 <span>Live Tracker</span></div>
+      <div class="menu-item" onclick="showSection('payments',this)">💳 <span>Payments</span></div>
+      <div class="menu-item" onclick="showSection('eco',this)">🌿 <span>Eco Impact</span></div>
+      <div class="menu-item" onclick="showSection('profile',this)">👤 <span>Profile</span></div>
+      <div class="menu-item" onclick="showSupportModal()">🎧 <span>Support</span></div>
+      <div class="menu-item" onclick="showSettingsModal()">⚙️ <span>Settings</span></div>
+    </div>
+  </div>
+  <div class="bottom-card">
+    <h3>🌱 Go Green!</h3>
+    <p style="margin-top:10px;font-size:12px;">Earn points & save Earth</p>
+    <button onclick="showLeaderboardModal()">🏆 Leaderboard</button>
+    <button class="logout-btn" onclick="logout()">🚪 Logout</button>
+  </div>
+</div>
+
+<div class="main">
+  <!-- DASHBOARD -->
+  <div id="dashboard" class="section active">
+    <div class="topbar">
+      <div><h1 id="greetingMsg">Good Morning, Jonjon 👋</h1><p>Track deliveries & eco impact live.</p></div>
+      <div class="profile">
+        <div class="notification" onclick="showNotificationsModal()">🔔<div class="badge" id="notifBadge">3</div></div>
+        <img src="https://i.pravatar.cc/100?img=7" alt=""><div><strong id="profileNameDisplay">Jonjon Cañete</strong><p style="color:#777;">Customer</p></div>
+      </div>
+    </div>
+    <div class="cards">
+      <div class="card" onclick="showSection('tracker')"><div class="card-top"><div><p>Current Orders</p><h2 id="currentOrdersCount">1</h2><p class="green">In Progress</p></div><div class="card-icon">📦</div></div></div>
+      <div class="card" onclick="showSection('orders')"><div class="card-top"><div><p>Total Deliveries</p><h2 id="totalDeliveriesCount">23</h2><p class="green">Completed</p></div><div class="card-icon">🛵</div></div></div>
+      <div class="card" onclick="showSection('eco')"><div class="card-top"><div><p>CO₂ Saved</p><h2 id="totalCo2Display">12.4</h2><p class="green">kg Impact</p></div><div class="card-icon">🌿</div></div></div>
+      <div class="card" onclick="showLeaderboardModal()"><div class="card-top"><div><p>Eco Points</p><h2 id="ecoPointsDisplay">320</h2><p class="green">This Month</p></div><div class="card-icon">🏆</div></div></div>
+    </div>
+    <div class="grid">
+      <div class="panel"><div class="panel-header"><h2>Live Delivery Tracker</h2><div class="live">LIVE</div></div>
+        <div id="dashboardMap" class="map-container" style="height:280px;"></div>
+        <div class="timeline" id="orderTimeline">
+          <div class="step"><div class="circle" id="step1">✓</div><p>Accepted</p></div>
+          <div class="step"><div class="circle" id="step2">✓</div><p>Assigned</p></div>
+          <div class="step"><div class="circle" id="step3">🛵</div><p>On The Way</p></div>
+          <div class="step"><div class="circle gray" id="step4">🏠</div><p>Arriving</p></div>
+          <div class="step"><div class="circle gray" id="step5">✔</div><p>Delivered</p></div>
+        </div>
+      </div>
+      <div class="panel"><div class="panel-header"><h2>Order Status</h2></div>
+        <div class="status-box"><h3 class="green" id="orderStatusText">● In Progress</h3>
+          <div class="status-row"><span>Order ID</span><strong id="activeOrderId">ORD-2025-000123</strong></div>
+          <div class="status-row"><span>Location</span><strong>Lipa City, Batangas</strong></div>
+          <div class="status-row"><span>Payment</span><strong id="activePaymentMethod">GCash</strong></div>
+          <div class="status-row"><span>Rider</span><strong id="activeRiderName">Juan Dela Cruz</strong></div>
+          <div class="status-row"><span>ETA</span><strong id="activeETA">8 min</strong></div>
+          <button class="btn" onclick="contactRiderModal()">📞 Contact Rider</button>
+          <button class="btn btn-secondary" onclick="markAsDelivered()" id="deliverBtn">✅ Mark as Delivered</button>
+          <button class="btn" style="background:#f39c12;" onclick="trackFullScreen()">📍 View Full Map</button>
+        </div>
+      </div>
+    </div>
+    <div class="bottom-grid">
+      <div class="panel"><div class="panel-header"><h2>Recent Orders</h2><button onclick="showSection('orders',document.querySelector('.menu-item:nth-child(2)'))" style="border:none;background:none;color:#1db954;cursor:pointer;">View All →</button></div>
+        <div id="recentOrdersList"></div>
+      </div>
+      <div class="panel"><div class="panel-header"><h2>Recent Payments</h2><button onclick="showSection('payments')" style="border:none;background:none;color:#1db954;cursor:pointer;">Manage →</button></div>
+        <div id="recentPaymentsList"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ORDERS -->
+  <div id="orders" class="section panel"><h1>📦 My Orders</h1><div id="allOrdersList"></div><button class="btn" style="margin-top:20px;" onclick="placeNewOrder()">➕ Place New Order</button></div>
+
+  <!-- LIVE TRACKER FULL PAGE -->
+  <div id="tracker" class="section panel"><h1>📍 Live Tracker</h1><p style="margin:20px 0;">Real-time rider location - Lipa City</p>
+    <div id="fullMap" class="map-container" style="height:450px;"></div>
+    <div style="margin-top:25px;display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:20px;">
+      <div class="card" onclick="contactRiderModal()"><h3>🛵 Rider</h3><p id="riderNameDisplay">Juan Dela Cruz</p><small>Click to contact</small></div>
+      <div class="card"><h3>⏱ ETA</h3><p id="etaDisplay">8 min</p></div>
+      <div class="card"><h3>📦 Status</h3><p id="globalStatusDisplay" style="color:#1db954;font-weight:700;">On The Way</p></div>
+    </div>
+    <button class="btn" onclick="startSimulation()" style="margin-top:15px;">🔄 Refresh Tracking</button>
+  </div>
+
+  <!-- PAYMENTS -->
+  <div id="payments" class="section panel"><div class="panel-header"><h1>💳 Payment Methods</h1><button class="btn" style="width:200px;" onclick="openPaymentModal()">+ Add Payment</button></div><div id="paymentMethodsList"></div><div style="margin-top:20px;"><h3>Pending Payment</h3><div class="status-row"><span>Current Order</span><strong id="pendingAmount">₱245</strong></div><button class="btn" onclick="payNow()">💸 Pay Now</button></div></div>
+
+  <!-- ECO IMPACT -->
+  <div id="eco" class="section panel"><h1>🌿 Eco Impact Dashboard</h1><div class="cards" style="margin-top:25px;"><div class="card"><p>Total CO₂ Saved</p><h2 id="ecoCo2">12.4kg</h2></div><div class="card"><p>Green Deliveries</p><h2 id="ecoDeliveries">23</h2></div><div class="card" onclick="showLeaderboardModal()"><p>Eco Rank</p><h2 id="ecoRank">#14</h2><small>Click for leaderboard</small></div></div><button class="btn" onclick="showLeaderboardModal()">🏆 View Full Leaderboard</button><button class="btn btn-secondary" onclick="shareEcoImpact()">📤 Share My Impact</button></div>
+
+  <!-- PROFILE -->
+  <div id="profile" class="section panel"><h1>👤 My Profile</h1><div style="margin-top:30px;max-width:500px;"><label>Full Name</label><input type="text" id="profileFullName" value="Jonjon Cañete" style="width:100%;padding:15px;margin-bottom:15px;border-radius:12px;border:1px solid #ddd;"><label>Email Address</label><input type="email" id="profileEmail" value="jonjon@ecorush.com" style="width:100%;padding:15px;margin-bottom:15px;border-radius:12px;border:1px solid #ddd;"><label>Phone Number</label><input type="tel" id="profilePhone" value="+63 912 345 6789" style="width:100%;padding:15px;margin-bottom:15px;border-radius:12px;border:1px solid #ddd;"><label>Address</label><textarea id="profileAddress" rows="2" style="width:100%;padding:15px;margin-bottom:15px;border-radius:12px;border:1px solid #ddd;">Lipa City, Batangas</textarea><button class="btn" onclick="saveProfile()">💾 Save Profile</button><button class="btn btn-danger" style="margin-top:10px;" onclick="logout()">🚪 Logout Account</button></div></div>
+</div>
+
+<!-- MODAL -->
+<div id="genericModal" class="modal"><div class="modal-content"><span class="close" onclick="closeModal()">&times;</span><div id="modalBody"></div></div></div>
+
+<script>
+  // ========== SESSION CHECK ON PAGE LOAD ==========
+  if (!localStorage.getItem('ecorush_logged_in')) {
+    window.location.href = 'login.html';
+  }
+
+  // ========== DATA STATE ==========
+  let userData = {
+    name: localStorage.getItem('ecorush_user_name') || "Jonjon Cañete", 
+    email: localStorage.getItem('ecorush_user_email') || "jonjon@ecorush.com", 
+    phone: "+63 912 345 6789", 
+    address: "Lipa City, Batangas",
+    totalDeliveries: 23, 
+    co2Saved: 12.4, 
+    ecoPoints: 320,
+    activeOrder: { id: "ORD-2025-000123", status: "onway", payment: "GCash", rider: "Juan Dela Cruz", etaMinutes: 8 }
+  };
+  
+  let ordersHistory = [
+    { id: "ORD-2025-000123", date: "May 20, 2025", status: "onway", amount: 245, payment: "GCash", items: "Groceries & Snacks" },
+    { id: "ORD-2025-000122", date: "May 19, 2025", status: "delivered", amount: 189, payment: "Maya", items: "Fresh Produce" },
+    { id: "ORD-2025-000121", date: "May 18, 2025", status: "delivered", amount: 320, payment: "GCash", items: "Electronics" }
+  ];
+  let paymentMethods = [{ type: "GCash", last4: "2931" }, { type: "Maya", last4: "7823" }, { type: "Credit Card", last4: "4589" }];
+  let notificationsList = ["✅ Order ORD-123 is on the way!", "🌿 You saved 2.3kg CO₂!", "🏆 You moved up the leaderboard!"];
+  
+  let leaderboardData = [
+    { name: "GreenMart Lipa", co2: 142 },{ name: "Café Malagundi", co2: 97 },{ name: "Jonjon C.", co2: 12.4 },
+    { name: "Jen Carla M.", co2: 41 },{ name: "Ayeisah P.", co2: 38 },{ name: "Maria Santos", co2: 29 }
+  ];
+  
+  // ========== MAPS ==========
+  let dashboardMap, fullMap, riderMarker, riderMarkerFull, simInterval;
+  const lipaCenter = [13.9405, 121.1585];
+  const startPoint = [13.9380, 121.1520];
+  const destPoint = [13.9460, 121.1650];
+  let simProgress = 0;
+  
+  function initMaps(){
+    if(dashboardMap) dashboardMap.remove(); 
+    if(fullMap) fullMap.remove();
+    dashboardMap = L.map('dashboardMap').setView(lipaCenter, 14);
+    L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', { attribution: '&copy; OSM' }).addTo(dashboardMap);
+    riderMarker = L.marker(startPoint, {icon: L.divIcon({html:"🛵",iconSize:[30,30],className:"custom-marker"})}).addTo(dashboardMap).bindPopup("EcoRider");
+    L.marker(destPoint, {icon: L.divIcon({html:"📍",iconSize:[30,30]})}).addTo(dashboardMap).bindPopup("Your Delivery");
+    L.polyline([startPoint, destPoint], {color:"#1db954", weight:3, dashArray:"5,10"}).addTo(dashboardMap);
+    
+    fullMap = L.map('fullMap').setView(lipaCenter, 14);
+    L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {}).addTo(fullMap);
+    riderMarkerFull = L.marker(startPoint, {icon: L.divIcon({html:"⚡🛵",iconSize:[34,34]})}).addTo(fullMap).bindPopup("Rider: "+userData.activeOrder.rider);
+    L.marker(destPoint, {icon: L.divIcon({html:"🏠",iconSize:[30,30]})}).addTo(fullMap).bindPopup("Destination");
+    L.polyline([startPoint, destPoint], {color:"#1db954", weight:4}).addTo(fullMap);
+    startSimulation();
+  }
+  
+  function interpolate(p1, p2, t){ return [p1[0] + (p2[0]-p1[0])*t, p1[1] + (p2[1]-p1[1])*t]; }
+  
+  function startSimulation(){
+    if(simInterval) clearInterval(simInterval);
+    simProgress = 0;
+    simInterval = setInterval(()=>{
+      if(userData.activeOrder.status === "delivered"){ if(simProgress<1) simProgress=1; updateMarkers(1); return; }
+      if(simProgress < 1){
+        simProgress += 0.01;
+        if(simProgress >= 1) { simProgress=1; userData.activeOrder.status = "delivered"; userData.activeOrder.etaMinutes=0; updateAllUI(); alert("🎉 Your order has arrived! Check dashboard."); }
+        updateMarkers(simProgress);
+        let remaining = Math.max(0, Math.floor((1-simProgress)*8));
+        userData.activeOrder.etaMinutes = remaining;
+        updateAllUI();
+      }
+    }, 400);
+  }
+  
+  function updateMarkers(t){
+    let pos = interpolate(startPoint, destPoint, t);
+    if(riderMarker) riderMarker.setLatLng(pos);
+    if(riderMarkerFull) riderMarkerFull.setLatLng(pos);
+  }
+  
+  // ========== UI UPDATE ==========
+  function updateAllUI(){
+    document.getElementById("totalDeliveriesCount").innerText = userData.totalDeliveries;
+    document.getElementById("totalCo2Display").innerText = userData.co2Saved.toFixed(1);
+    document.getElementById("ecoPointsDisplay").innerText = userData.ecoPoints;
+    document.getElementById("ecoCo2").innerText = userData.co2Saved.toFixed(1)+"kg";
+    document.getElementById("ecoDeliveries").innerText = userData.totalDeliveries;
+    document.getElementById("activeOrderId").innerText = userData.activeOrder.id;
+    document.getElementById("activePaymentMethod").innerText = userData.activeOrder.payment;
+    document.getElementById("activeRiderName").innerText = userData.activeOrder.rider;
+    document.getElementById("activeETA").innerText = userData.activeOrder.etaMinutes + " min";
+    document.getElementById("globalStatusDisplay").innerText = userData.activeOrder.status === "onway" ? "On The Way" : (userData.activeOrder.status === "accepted" ? "Accepted" : "Delivered");
+    document.getElementById("etaDisplay").innerText = userData.activeOrder.etaMinutes + " min";
+    document.getElementById("riderNameDisplay").innerText = userData.activeOrder.rider;
+    document.getElementById("pendingAmount").innerText = "₱" + (ordersHistory.find(o=>o.id===userData.activeOrder.id)?.amount || 245);
+    let rank = leaderboardData.sort((a,b)=>b.co2-a.co2).findIndex(x=>x.name === "Jonjon C.")+1;
+    document.getElementById("ecoRank").innerText = "#"+rank;
+    document.getElementById("profileNameDisplay").innerText = userData.name;
+    let hour = new Date().getHours();
+    let greeting = hour<12?"Morning":(hour<18?"Afternoon":"Evening");
+    document.getElementById("greetingMsg").innerHTML = `Good ${greeting}, ${userData.name.split(' ')[0]} 👋`;
+    document.getElementById("notifBadge").innerText = notificationsList.length;
+    updateTimelineUI();
+    renderRecentOrders();
+    renderAllOrders();
+    renderPayments();
+  }
+  
+  function updateTimelineUI(){
+    const status = userData.activeOrder.status;
+    let activeStep = { accepted:1, assigned:2, onway:3, arriving:4, delivered:5 }[status] || 3;
+    for(let i=1;i<=5;i++){
+      let circle = document.getElementById(`step${i}`);
+      if(i <= activeStep && status !== "delivered" && i<5){ circle.style.background="#1db954"; circle.classList.remove("gray"); }
+      else if(i===activeStep && status==="onway"){ circle.innerHTML="🛵"; circle.style.background="#1db954";}
+      else if(i===5 && status==="delivered"){ circle.innerHTML="✔"; circle.style.background="#1db954"; circle.classList.remove("gray");}
+      else if(i>activeStep){ circle.classList.add("gray"); circle.style.background="#ddd"; }
+    }
+    document.getElementById("orderStatusText").innerHTML = status==="onway"?"● On The Way":(status==="delivered"?"✅ Delivered":"● In Progress");
+  }
+  
+  function renderRecentOrders(){
+    let html = "";
+    ordersHistory.slice(0,2).forEach(o=>{
+      html += `<div class="list-item" onclick="trackSpecificOrder('${o.id}')"><div><strong>${o.id}</strong><p>${o.date}</p></div><div><p class="green">${o.status==="delivered"?"Completed":"In Progress"}</p><strong>₱${o.amount}</strong></div></div>`;
+    });
+    document.getElementById("recentOrdersList").innerHTML = html || "<p>No orders</p>";
+  }
+  
+  function renderAllOrders(){
+    let html = "";
+    ordersHistory.forEach(o=>{
+      html += `<div class="list-item"><div><strong>${o.id}</strong><p>${o.date} - ${o.items}</p></div><div><button class="btn" style="width:auto;padding:10px 20px;margin:0;" onclick="trackSpecificOrder('${o.id}')">📍 Track</button><button class="btn" style="width:auto;padding:10px 20px;margin-left:10px;background:#2c6e3c;" onclick="reorder('${o.id}')">🔄 Reorder</button></div></div>`;
+    });
+    document.getElementById("allOrdersList").innerHTML = html || "<p>No orders yet</p>";
+  }
+  
+  function renderPayments(){
+    let html = "";
+    paymentMethods.forEach(p=>{
+      html += `<div class="list-item"><div><strong>${p.type}</strong><p>**** ${p.last4}</p></div><button class="btn" style="width:120px;margin:0;" onclick="payWithMethod('${p.type}')">💳 Pay Now</button><button class="btn" style="width:80px;margin-left:10px;background:#e74c3c;" onclick="removePaymentMethod('${p.type}')">🗑</button></div>`;
+    });
+    document.getElementById("paymentMethodsList").innerHTML = html;
+  }
+  
+  // ========== BUSINESS LOGIC ==========
+  function markAsDelivered(){
+    if(userData.activeOrder.status === "delivered"){ alert("Already delivered!"); return; }
+    const savedCo2 = (Math.random() * 3 + 1.5).toFixed(1);
+    userData.co2Saved += parseFloat(savedCo2);
+    userData.totalDeliveries += 1;
+    userData.ecoPoints += 50;
+    userData.activeOrder.status = "delivered";
+    ordersHistory = ordersHistory.map(o=> o.id === userData.activeOrder.id ? {...o, status:"delivered"} : o);
+    notificationsList.unshift(`🎉 Delivery completed! +${savedCo2}kg CO₂ saved, +50 Eco Points!`);
+    updateAllUI();
+    alert(`✅ Order delivered! +${savedCo2}kg CO₂ saved! +50 Points`);
+    setTimeout(()=>{ placeNewOrder(); }, 1000);
+  }
+  
+  function placeNewOrder(){
+    let newId = "ORD-" + Date.now();
+    let newOrder = { id: newId, date: new Date().toLocaleDateString(), status: "accepted", amount: Math.floor(Math.random()*300+150), payment: "GCash", items: "New Eco Delivery" };
+    ordersHistory.unshift(newOrder);
+    userData.activeOrder = { id: newId, status: "accepted", payment: "GCash", rider: "Maria R.", etaMinutes: 12 };
+    notificationsList.unshift(`🆕 New order #${newId} placed! Rider assigned soon.`);
+    updateAllUI();
+    showSection('dashboard');
+    alert(`✅ New order ${newId} placed successfully!`);
+    startSimulation();
+  }
+  
+  function reorder(orderId){
+    let old = ordersHistory.find(o=>o.id===orderId);
+    if(old){ placeNewOrder(); alert(`🔄 Reorder from ${orderId} placed!`); } 
+    else alert("Reorder failed");
+  }
+  
+  function trackSpecificOrder(id){
+    let order = ordersHistory.find(o=>o.id===id);
+    if(order && order.status !== "delivered"){ 
+      userData.activeOrder = { id: order.id, status: order.status, payment: order.payment, rider: "Rider", etaMinutes: 7 }; 
+      updateAllUI(); 
+      showSection('tracker'); 
+      alert(`📍 Tracking ${id}`);
+      startSimulation();
+    } else alert("Order already delivered or not found");
+  }
+  
+  function trackFullScreen(){ showSection('tracker'); }
+  
+  function payNow(){
+    openModal(`<h2>💳 Payment Gateway</h2><p>Order: ${userData.activeOrder.id}</p><p>Amount: ₱${ordersHistory.find(o=>o.id===userData.activeOrder.id)?.amount || 245}</p><select id="payMethodSelect">${paymentMethods.map(p=>`<option>${p.type}</option>`).join('')}</select><button class="btn" onclick="processPayment()">Confirm Payment</button>`);
+  }
+  
+  function processPayment(){
+    alert("✅ Payment successful! Order will be processed.");
+    closeModal();
+  }
+  
+  function payWithMethod(method){ alert(`💳 Payment of ₱245 using ${method} completed!`); }
+  
+  function removePaymentMethod(type){ paymentMethods = paymentMethods.filter(p=>p.type!==type); renderPayments(); alert(`Removed ${type}`); }
+  
+  function saveProfile(){
+    userData.name = document.getElementById("profileFullName").value;
+    userData.email = document.getElementById("profileEmail").value;
+    userData.phone = document.getElementById("profilePhone").value;
+    userData.address = document.getElementById("profileAddress").value;
+    updateAllUI();
+    alert("✅ Profile updated successfully!");
+  }
+  
+  function shareEcoImpact(){ alert(`🌿 I've saved ${userData.co2Saved.toFixed(1)}kg CO₂ with EcoRush! Join the green movement!`); }
+  
+  // ========== FIXED LOGOUT FUNCTION ==========
+  function logout(){
+    if(confirm("Are you sure you want to logout?")){
+      // Clear all localStorage session data
+      localStorage.removeItem('ecorush_logged_in');
+      localStorage.removeItem('ecorush_user_email');
+      localStorage.removeItem('ecorush_user_name');
+      localStorage.removeItem('ecorush_user_role');
+      localStorage.removeItem('ecorush_user_id');
+      
+      // Clear sessionStorage din for safety
+      sessionStorage.clear();
+      
+      // Show message and redirect
+      alert("🔒 Logged out successfully!");
+      window.location.href = "login.html";
+    }
+  }
+  
+  // ========== MODALS ==========
+  function openModal(content){
+    document.getElementById("modalBody").innerHTML = content;
+    document.getElementById("genericModal").style.display = "flex";
+  }
+  function closeModal(){ document.getElementById("genericModal").style.display = "none"; }
+  
+  function contactRiderModal(){
+    openModal(`<h2>📞 Contact Rider</h2><p><strong>${userData.activeOrder.rider}</strong></p><p>📱 +63 912 345 6789</p><p>🚚 Order: ${userData.activeOrder.id}</p><button class="btn" onclick="alert('Calling rider ${userData.activeOrder.rider}...');closeModal()">📞 Call Now</button><button class="btn btn-secondary" onclick="alert('SMS sent to rider');closeModal()">💬 Send SMS</button>`);
+  }
+  
+  function showLeaderboardModal(){
+    let list = leaderboardData.sort((a,b)=>b.co2-a.co2).map((u,i)=>`<li style="padding:8px;border-bottom:1px solid #eee;">${i+1}. ${u.name} — ${u.co2.toFixed(1)} kg CO₂</li>`).join('');
+    openModal(`<h2>🏆 Eco Leaderboard - Lipa City</h2><ul style="margin-top:15px;list-style:none;">${list}</ul><button class="btn" onclick="closeModal()">Close</button>`);
+  }
+  
+  function showNotificationsModal(){
+    let notifHtml = notificationsList.map(n=>`<div style="padding:12px;border-bottom:1px solid #eee;">📢 ${n}</div>`).join('');
+    openModal(`<h2>🔔 Notifications (${notificationsList.length})</h2>${notifHtml || "<p>No new notifications</p>"}<button class="btn" style="margin-top:15px;" onclick="notificationsList=[];updateAllUI();closeModal();">Clear All</button>`);
+  }
+  
+  function openPaymentModal(){
+    openModal(`<h2>➕ Add Payment Method</h2><input type="text" id="newPayType" placeholder="Payment type (GCash/Maya/Visa)" style="width:100%;padding:12px;margin-bottom:10px;"><input type="text" id="newPayNum" placeholder="Last 4 digits / Account number" style="width:100%;padding:12px;"><button class="btn" style="margin-top:15px;" onclick="addPaymentMethod()">Save Payment</button>`);
+  }
+  
+  function addPaymentMethod(){
+    let type = document.getElementById("newPayType")?.value;
+    let num = document.getElementById("newPayNum")?.value;
+    if(type && num){ paymentMethods.push({type, last4: num}); renderPayments(); closeModal(); alert("✅ Payment method saved!"); updateAllUI();}
+    else alert("Please fill all fields");
+  }
+  
+  function showSupportModal(){
+    openModal(`<h2>🎧 EcoRush Customer Support</h2><p>📧 Email: support@ecorush.com</p><p>📞 Hotline: (043) 123-4567</p><p>💬 Live chat: Available 8am-8pm</p><p>📍 Address: Lipa City, Batangas</p><button class="btn" onclick="closeModal()">Close</button>`);
+  }
+  
+  function showSettingsModal(){
+    openModal(`<h2>⚙️ App Settings</h2><label><input type="checkbox" id="notifToggle" checked> Push Notifications</label><br><br><label><input type="checkbox" id="darkToggle"> Dark Mode (Coming Soon)</label><br><br><label>Language</label><select><option>English</option><option>Filipino</option></select><button class="btn" style="margin-top:20px;" onclick="alert('Settings saved!');closeModal()">Save Settings</button>`);
+  }
+  
+  function showSection(id, element){
+    document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
+    document.getElementById(id).classList.add('active');
+    document.querySelectorAll('.menu-item').forEach(i=>i.classList.remove('active'));
+    if(element) element.classList.add('active');
+    setTimeout(()=>{ if(window.fullMap) fullMap?.invalidateSize(); if(window.dashboardMap) dashboardMap?.invalidateSize(); }, 100);
+  }
+  
+  window.onload = () => { initMaps(); updateAllUI(); };
+  window.onclick = (e)=>{ if(e.target.classList.contains('modal')) closeModal(); };
+</script>
+</body>
+</html>

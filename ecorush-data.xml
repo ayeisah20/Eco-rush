@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet type="text/xsl" href="../transform.xslt"?>
+<ecorush>
+
+  <!-- PROJECT INFORMATION -->
+  <project>
+    <name>EcoRush</name>
+    <tagline>AI-Powered Sustainable Delivery Platform</tagline>
+    <website>www.ecorush.com</website>
+    <location>Lipa City, Batangas, Philippines</location>
+    <team>
+      <member role="Developer">Cañete, Jonjon</member>
+      <member role="Developer">Manzanares, Jen Carla</member>
+      <member role="Developer">Polintang, Ayeisah</member>
+    </team>
+  </project>
+
+  <!-- OBJECTIVES -->
+  <objectives>
+    <main>
+      To establish a premier, eco-friendly delivery network in Lipa City that optimizes
+      urban logistics through sustainable technology and artificial intelligence.
+    </main>
+    <specific>
+      <goal id="1" category="Tech">
+        <title>AI Integration</title>
+        <description>Implement route optimization algorithms to navigate through the fastest, least congested paths in real-time.</description>
+      </goal>
+      <goal id="2" category="Eco">
+        <title>Sustainability</title>
+        <description>Eliminate 100% of delivery-related carbon emissions by using an all-electric vehicle fleet.</description>
+      </goal>
+      <goal id="3" category="Ops">
+        <title>Efficiency</title>
+        <description>Automate rider assignments based on proximity and traffic conditions to ensure deliveries are completed in record time.</description>
+      </goal>
+      <goal id="4" category="UX">
+        <title>User Engagement</title>
+        <description>Provide a transparent Impact Dashboard where users can see how much CO2 they have saved by choosing EcoRush.</description>
+      </goal>
+    </specific>
+  </objectives>
+
+  <!-- IMPORTANCE -->
+  <importance>
+    <point>
+      <title>Economic Recovery</title>
+      <description>Restores productivity by using AI to bypass gridlock, significantly reducing delivery costs for local businesses.</description>
+    </point>
+    <point>
+      <title>Environmental Protection</title>
+      <description>Eliminates air pollution by replacing gasoline engines with electric power, aligning the city with global sustainability standards.</description>
+    </point>
+  </importance>
+
+  <!-- RELEVANCE -->
+  <relevance>
+    <point>
+      <title>Localized Logistics</title>
+      <description>Specifically mapped for Lipa City's unique geography, offering better efficiency than generic apps in areas like Sabang.</description>
+    </point>
+    <point>
+      <title>SME Empowerment</title>
+      <description>Provides small businesses with high-tech infrastructure and encourages community eco-consciousness through real-time CO2 savings tracking.</description>
+    </point>
+  </relevance>
+
+  <!-- SCOPE -->
+  <scope>
+    <included>
+      <item type="location">Service is strictly confined to the borders of Lipa City, including major hubs like Sabang and Pres. Jose P. Laurel Highway.</item>
+      <item type="users">Local residents, small-to-medium business owners, and specialized delivery riders.</item>
+      <item type="features">Real-time GPS tracking, AI-driven path recommendations, and environmental impact analytics.</item>
+    </included>
+    <excluded>
+      <item>Deliveries or logistics operations outside of Lipa City, Batangas.</item>
+      <item>The use of any gasoline-powered motorcycles or vehicles.</item>
+      <item>Inter-city freight or heavy-duty trucking.</item>
+    </excluded>
+  </scope>
+
+  <!-- DATABASE SCHEMA -->
+  <schema>
+    <entity name="Customer">
+      <attribute key="primary">CustomerID</attribute>
+      <attribute>Name</attribute>
+      <attribute>Email</attribute>
+      <attribute>Address</attribute>
+      <attribute>PhoneNo</attribute>
+      <relationship type="places" target="Order" cardinality="1-to-many"/>
+    </entity>
+    <entity name="Order">
+      <attribute key="primary">OrderID</attribute>
+      <attribute key="foreign">CustomerID</attribute>
+      <attribute>OrderDate</attribute>
+      <attribute>OrderPlace</attribute>
+      <attribute>TotalAmount</attribute>
+      <relationship type="has" target="Payment" cardinality="1-to-1"/>
+    </entity>
+    <entity name="Payment">
+      <attribute key="primary">PaymentID</attribute>
+      <attribute key="foreign">OrderID</attribute>
+      <attribute>Amount</attribute>
+      <attribute>PaymentMethod</attribute>
+      <attribute>ConfirmCode</attribute>
+      <relationship type="made-to" target="Rider" cardinality="many-to-1"/>
+    </entity>
+    <entity name="Rider">
+      <attribute key="primary">RiderID</attribute>
+      <attribute>Name</attribute>
+      <attribute>Email</attribute>
+      <attribute>PhoneNo</attribute>
+      <attribute>Address</attribute>
+      <relationship type="assigned-to" target="Delivery" cardinality="1-to-many"/>
+    </entity>
+    <entity name="Delivery">
+      <attribute key="primary">DeliveryID</attribute>
+      <attribute key="foreign">OrderID</attribute>
+      <attribute>DeliveryDate</attribute>
+      <attribute>DeliveryStatus</attribute>
+      <attribute>DeliveryType</attribute>
+    </entity>
+  </schema>
+
+  <!-- SAMPLE DATA -->
+  <sampleData>
+    <customers>
+      <customer>
+        <customerID>C001</customerID>
+        <name>Maria Santos</name>
+        <email>maria@email.com</email>
+        <address>Sabang, Lipa City</address>
+        <phoneNo>09171234567</phoneNo>
+      </customer>
+      <customer>
+        <customerID>C002</customerID>
+        <name>Juan Dela Cruz</name>
+        <email>juan@email.com</email>
+        <address>Maraouy, Lipa City</address>
+        <phoneNo>09281234567</phoneNo>
+      </customer>
+    </customers>
+    <orders>
+      <order>
+        <orderID>O001</orderID>
+        <customerID>C001</customerID>
+        <orderDate>2025-06-01</orderDate>
+        <orderPlace>Sabang, Lipa City</orderPlace>
+        <totalAmount>350.00</totalAmount>
+      </order>
+      <order>
+        <orderID>O002</orderID>
+        <customerID>C002</customerID>
+        <orderDate>2025-06-02</orderDate>
+        <orderPlace>Maraouy, Lipa City</orderPlace>
+        <totalAmount>200.00</totalAmount>
+      </order>
+    </orders>
+    <riders>
+      <rider>
+        <riderID>R001</riderID>
+        <name>Carlos Reyes</name>
+        <email>carlos@ecorush.com</email>
+        <phoneNo>09391234567</phoneNo>
+        <address>Ayala Highway, Lipa City</address>
+      </rider>
+    </riders>
+    <deliveries>
+      <delivery>
+        <deliveryID>D001</deliveryID>
+        <orderID>O001</orderID>
+        <deliveryDate>2025-06-01</deliveryDate>
+        <deliveryStatus>Delivered</deliveryStatus>
+        <deliveryType>Express</deliveryType>
+      </delivery>
+      <delivery>
+        <deliveryID>D002</deliveryID>
+        <orderID>O002</orderID>
+        <deliveryDate>2025-06-02</deliveryDate>
+        <deliveryStatus>In Transit</deliveryStatus>
+        <deliveryType>Standard</deliveryType>
+      </delivery>
+    </deliveries>
+  </sampleData>
+
+</ecorush>
