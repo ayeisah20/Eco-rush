@@ -1,0 +1,356 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet type="text/xsl" href="users.xslt"?>
+<users>
+  <user id="USR-001">
+    <name>Jonjon Cañete</name>
+    <email>jonjon@ecorush.com</email>
+    <role>customer</role>
+    <status>active</status>
+    <deliveries>23</deliveries>
+    <co2Saved>12.4</co2Saved>
+    <phone>+63 912 345 6789</phone>
+    <address>Sabang, Lipa City</address>
+    <joined>2025-01-15</joined>
+  </user>
+  <user id="USR-002">
+    <name>Jen Carla Manzanares</name>
+    <email>jen@ecorush.com</email>
+    <role>customer</role>
+    <status>active</status>
+    <deliveries>18</deliveries>
+    <co2Saved>8.7</co2Saved>
+    <phone>+63 923 456 7890</phone>
+    <address>Maraouy, Lipa City</address>
+    <joined>2025-01-20</joined>
+  </user>
+  <user id="USR-003">
+    <name>Ayeisah Polintang</name>
+    <email>ayei@ecorush.com</email>
+    <role>customer</role>
+    <status>active</status>
+    <deliveries>15</deliveries>
+    <co2Saved>6.2</co2Saved>
+    <phone>+63 934 567 8901</phone>
+    <address>Pres. Jose P. Laurel, Lipa City</address>
+    <joined>2025-02-01</joined>
+  </user>
+  <user id="USR-004">
+    <name>Juan Dela Cruz</name>
+    <email>juan.rider@ecorush.com</email>
+    <role>rider</role>
+    <status>online</status>
+    <deliveries>87</deliveries>
+    <rating>4.8</rating>
+    <vehicle>Electric Scooter</vehicle>
+    <phone>+63 945 678 9012</phone>
+    <joined>2024-11-10</joined>
+  </user>
+  <user id="USR-005">
+    <name>Maria Reyes</name>
+    <email>maria.rider@ecorush.com</email>
+    <role>rider</role>
+    <status>online</status>
+    <deliveries>62</deliveries>
+    <rating>4.9</rating>
+    <vehicle>E-Bike</vehicle>
+    <phone>+63 956 789 0123</phone>
+    <joined>2024-12-05</joined>
+  </user>
+  <user id="USR-006">
+    <name>GreenMart Lipa</name>
+    <email>greenmart@ecorush.com</email>
+    <role>business</role>
+    <status>active</status>
+    <deliveries>145</deliveries>
+    <co2Saved>89.3</co2Saved>
+    <phone>+63 967 890 1234</phone>
+    <address>Ayala Highway, Lipa City</address>
+    <joined>2024-10-01</joined>
+  </user>
+  <user id="USR-007">
+    <name>Café Malagundi</name>
+    <email>cafe@ecorush.com</email>
+    <role>business</role>
+    <status>active</status>
+    <deliveries>67</deliveries>
+    <co2Saved>41.2</co2Saved>
+    <phone>+63 978 901 2345</phone>
+    <address>Malagundi, Lipa City</address>
+    <joined>2024-11-20</joined>
+  </user>
+  <user id="USR-008">
+    <name>Pedro Penduko</name>
+    <email>pedro@ecorush.com</email>
+    <role>customer</role>
+    <status>inactive</status>
+    <deliveries>3</deliveries>
+    <co2Saved>1.2</co2Saved>
+    <phone>+63 989 012 3456</phone>
+    <address>Balintawak, Lipa City</address>
+    <joined>2025-03-10</joined>
+  </user>
+  <user id="USR-009">
+    <name>Rider Mike</name>
+    <email>mike.rider@ecorush.com</email>
+    <role>rider</role>
+    <status>offline</status>
+    <deliveries>34</deliveries>
+    <rating>4.5</rating>
+    <vehicle>E-Trike</vehicle>
+    <phone>+63 990 123 4567</phone>
+    <joined>2025-01-05</joined>
+  </user>
+  <user id="USR-010">
+    <name>SM City Lipa</name>
+    <email>sm@ecorush.com</email>
+    <role>business</role>
+    <status>active</status>
+    <deliveries>234</deliveries>
+    <co2Saved>156.7</co2Saved>
+    <phone>+63 901 234 5678</phone>
+    <address>Ayala Highway, Lipa City</address>
+    <joined>2024-09-15</joined>
+  </user>
+  <user id="USR-011">
+    <name>Anna Rodriguez</name>
+    <email>anna@ecorush.com</email>
+    <role>customer</role>
+    <status>active</status>
+    <deliveries>42</deliveries>
+    <co2Saved>18.5</co2Saved>
+    <phone>+63 912 345 6790</phone>
+    <address>Barangay 3, Lipa City</address>
+    <joined>2024-12-10</joined>
+  </user>
+  <user id="USR-012">
+    <name>Rider Paulo</name>
+    <email>paulo.rider@ecorush.com</email>
+    <role>rider</role>
+    <status>online</status>
+    <deliveries>103</deliveries>
+    <rating>4.9</rating>
+    <vehicle>Electric Scooter</vehicle>
+    <phone>+63 923 456 7801</phone>
+    <joined>2024-10-20</joined>
+  </user>
+  <user id="USR-013">
+    <name>Jollibee Lipa</name>
+    <email>jollibee@ecorush.com</email>
+    <role>business</role>
+    <status>active</status>
+    <deliveries>312</deliveries>
+    <co2Saved>198.4</co2Saved>
+    <phone>+63 934 567 8912</phone>
+    <address>CM Recto Ave, Lipa City</address>
+    <joined>2024-08-01</joined>
+  </user>
+  <user id="USR-014">
+    <name>Karen Santos</name>
+    <email>karen@ecorush.com</email>
+    <role>customer</role>
+    <status>suspended</status>
+    <deliveries>7</deliveries>
+    <co2Saved>3.1</co2Saved>
+    <phone>+63 945 678 9023</phone>
+    <address>Villa Lourdes, Lipa City</address>
+    <joined>2025-02-15</joined>
+  </user>
+  <user id="USR-015">
+    <name>Rider Jenny</name>
+    <email>jenny.rider@ecorush.com</email>
+    <role>rider</role>
+    <status>busy</status>
+    <deliveries>76</deliveries>
+    <rating>4.7</rating>
+    <vehicle>E-Bike</vehicle>
+    <phone>+63 956 789 0134</phone>
+    <joined>2024-11-28</joined>
+  </user>
+  <user id="USR-016">
+    <name>McDonald's Lipa</name>
+    <email>mcdonalds@ecorush.com</email>
+    <role>business</role>
+    <status>active</status>
+    <deliveries>278</deliveries>
+    <co2Saved>167.3</co2Saved>
+    <phone>+63 967 890 1245</phone>
+    <address>P. Torres St, Lipa City</address>
+    <joined>2024-09-20</joined>
+  </user>
+  <user id="USR-017">
+    <name>Ramon Bautista</name>
+    <email>ramon@ecorush.com</email>
+    <role>customer</role>
+    <status>inactive</status>
+    <deliveries>5</deliveries>
+    <co2Saved>2.4</co2Saved>
+    <phone>+63 978 901 2356</phone>
+    <address>San Celestino, Lipa City</address>
+    <joined>2025-03-05</joined>
+  </user>
+  <user id="USR-018">
+    <name>Rider Carlo</name>
+    <email>carlo.rider@ecorush.com</email>
+    <role>rider</role>
+    <status>offline</status>
+    <deliveries>28</deliveries>
+    <rating>4.4</rating>
+    <vehicle>E-Trike</vehicle>
+    <phone>+63 989 012 3467</phone>
+    <joined>2025-01-18</joined>
+  </user>
+  <user id="USR-019">
+    <name>Starbucks Lipa</name>
+    <email>starbucks@ecorush.com</email>
+    <role>business</role>
+    <status>active</status>
+    <deliveries>156</deliveries>
+    <co2Saved>94.2</co2Saved>
+    <phone>+63 990 123 4578</phone>
+    <address>Ayala Highway, Lipa City</address>
+    <joined>2024-10-10</joined>
+  </user>
+  <user id="USR-020">
+    <name>Liza Soberano</name>
+    <email>liza@ecorush.com</email>
+    <role>customer</role>
+    <status>active</status>
+    <deliveries>31</deliveries>
+    <co2Saved>14.8</co2Saved>
+    <phone>+63 901 234 5689</phone>
+    <address>Banay-banay, Lipa City</address>
+    <joined>2025-01-25</joined>
+  </user>
+  <user id="USR-021">
+    <name>Rider Andrei</name>
+    <email>andrei.rider@ecorush.com</email>
+    <role>rider</role>
+    <status>online</status>
+    <deliveries>95</deliveries>
+    <rating>4.8</rating>
+    <vehicle>Electric Scooter</vehicle>
+    <phone>+63 912 345 6791</phone>
+    <joined>2024-11-15</joined>
+  </user>
+  <user id="USR-022">
+    <name>7-Eleven Lipa</name>
+    <email>711@ecorush.com</email>
+    <role>business</role>
+    <status>active</status>
+    <deliveries>189</deliveries>
+    <co2Saved>112.5</co2Saved>
+    <phone>+63 923 456 7802</phone>
+    <address>National Highway, Lipa City</address>
+    <joined>2024-09-05</joined>
+  </user>
+  <user id="USR-023">
+    <name>Megan Young</name>
+    <email>megan@ecorush.com</email>
+    <role>customer</role>
+    <status>pending</status>
+    <deliveries>0</deliveries>
+    <co2Saved>0</co2Saved>
+    <phone>+63 934 567 8913</phone>
+    <address>Dagatan, Lipa City</address>
+    <joined>2025-04-01</joined>
+  </user>
+  <user id="USR-024">
+    <name>Rider Kyla</name>
+    <email>kyla.rider@ecorush.com</email>
+    <role>rider</role>
+    <status>busy</status>
+    <deliveries>54</deliveries>
+    <rating>4.6</rating>
+    <vehicle>E-Bike</vehicle>
+    <phone>+63 945 678 9024</phone>
+    <joined>2024-12-12</joined>
+  </user>
+  <user id="USR-025">
+    <name>Dunkin' Lipa</name>
+    <email>dunkin@ecorush.com</email>
+    <role>business</role>
+    <status>active</status>
+    <deliveries>98</deliveries>
+    <co2Saved>58.7</co2Saved>
+    <phone>+63 956 789 0135</phone>
+    <address>Poblacion, Lipa City</address>
+    <joined>2024-11-01</joined>
+  </user>
+  <user id="USR-026">
+    <name>Enrique Gil</name>
+    <email>enrique@ecorush.com</email>
+    <role>customer</role>
+    <status>active</status>
+    <deliveries>27</deliveries>
+    <co2Saved>11.9</co2Saved>
+    <phone>+63 967 890 1246</phone>
+    <address>Bulacnin, Lipa City</address>
+    <joined>2025-02-10</joined>
+  </user>
+  <user id="USR-027">
+    <name>Rider Marco</name>
+    <email>marco.rider@ecorush.com</email>
+    <role>rider</role>
+    <status>offline</status>
+    <deliveries>41</deliveries>
+    <rating>4.5</rating>
+    <vehicle>E-Trike</vehicle>
+    <phone>+63 978 901 2357</phone>
+    <joined>2025-01-08</joined>
+  </user>
+  <user id="USR-028">
+    <name>Chowking Lipa</name>
+    <email>chowking@ecorush.com</email>
+    <role>business</role>
+    <status>suspended</status>
+    <deliveries>45</deliveries>
+    <co2Saved>27.3</co2Saved>
+    <phone>+63 989 012 3468</phone>
+    <address>CM Recto Ave, Lipa City</address>
+    <joined>2025-01-30</joined>
+  </user>
+  <user id="USR-029">
+    <name>Nadine Lustre</name>
+    <email>nadine@ecorush.com</email>
+    <role>customer</role>
+    <status>inactive</status>
+    <deliveries>9</deliveries>
+    <co2Saved>4.3</co2Saved>
+    <phone>+63 990 123 4579</phone>
+    <address>San Antonio, Lipa City</address>
+    <joined>2025-03-20</joined>
+  </user>
+  <user id="USR-030">
+    <name>Rider Bea</name>
+    <email>bea.rider@ecorush.com</email>
+    <role>rider</role>
+    <status>online</status>
+    <deliveries>112</deliveries>
+    <rating>5.0</rating>
+    <vehicle>Electric Scooter</vehicle>
+    <phone>+63 901 234 5680</phone>
+    <joined>2024-10-25</joined>
+  </user>
+  <user id="USR-031">
+    <name>Boss Drip Coffee</name>
+    <email>bossdrip@ecorush.com</email>
+    <role>business</role>
+    <status>pending</status>
+    <deliveries>0</deliveries>
+    <co2Saved>0</co2Saved>
+    <phone>+63 912 345 6792</phone>
+    <address>Sabang, Lipa City</address>
+    <joined>2025-04-10</joined>
+  </user>
+  <user id="USR-032">
+    <name>Kathryn Bernardo</name>
+    <email>kathryn@ecorush.com</email>
+    <role>customer</role>
+    <status>active</status>
+    <deliveries>38</deliveries>
+    <co2Saved>16.5</co2Saved>
+    <phone>+63 923 456 7803</phone>
+    <address>Mataas na Lupa, Lipa City</address>
+    <joined>2025-01-12</joined>
+  </user>
+</users>
